@@ -41,6 +41,6 @@ public class LocationController {
             @PathVariable String driverID
     ){
         locationService.removeDriver(driverID);
-        return ResponseEntity.ok("Driver " + driverID + " removed successfully");
+        return ResponseEntity.ok("Driver " + driverID + " removed successfully!");
     }
 }
