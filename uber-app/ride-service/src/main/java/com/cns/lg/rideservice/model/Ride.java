@@ -1,6 +1,6 @@
 package com.cns.lg.rideservice.model;
 
-import com.cns.lg.rideservice.enu.RideStatus;
+import com.cns.lg.rideservice.enums.RideStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,7 +20,7 @@ public class Ride {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
 
     @Column(nullable = false)
     private String riderId;
@@ -49,17 +50,19 @@ public class Ride {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RideStatus status;
-
     //Fare details
-    private double estimatedFare;
-    private double actualFare;
+    @Column(precision = 19, scale = 2)
+    private BigDecimal estimatedFare;
+
+    @Column(precision = 19, scale = 2)
+    private BigDecimal actualFare;
 
     //Timestamps
     @CreationTimestamp
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    private LocalDateTime updateAt;
+    private LocalDateTime updatedAt;
 
     private LocalDateTime startedAt;
     private LocalDateTime completedAt;

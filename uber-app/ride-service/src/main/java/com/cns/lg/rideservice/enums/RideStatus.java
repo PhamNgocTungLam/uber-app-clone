@@ -1,4 +1,4 @@
-package com.cns.lg.rideservice.enu;
+package com.cns.lg.rideservice.enums;
 
 /**
  * FLOW
@@ -10,7 +10,7 @@ public enum RideStatus {
     MATCHING,
     ACCEPTED,
     DRIVER_ARRIVING,
-    RIDE_STARED,
+    RIDE_STARTED,
     COMPLETED,
     CANCELLED
 }
