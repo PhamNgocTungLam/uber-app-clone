@@ -1,96 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- =========================================== -->
-    <!-- Kế thừa từ Root Parent POM của dự án        -->
-    <!-- =========================================== -->
     <parent>
-        <groupId>com.cns.lg</groupId>
-        <artifactId>uber-app</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.0</version>
+        <relativePath/>
     </parent>
 
+    <groupId>com.rideshare</groupId>
     <artifactId>matching-service</artifactId>
-    <name>matching-service</name>
-    <description>
-        Matching Service - Ghép cặp hành khách với tài xế gần nhất.
-        Tiêu thụ sự kiện từ Kafka (ride request), truy vấn Location Service để tìm tài xế,
-        và phát sự kiện ghép cặp thành công về Ride Service.
-    </description>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>ride-service</name>
+    <description>Matching Service for RideShare Platform</description>
 
-    <!-- =========================================== -->
-    <!-- Dependencies riêng của matching-service     -->
-    <!-- (version kế thừa từ Root POM / Spring BOM)  -->
-    <!-- =========================================== -->
+    <properties>
+        <java.version>17</java.version>
+        <spring-cloud.version>2023.0.0</spring-cloud.version>
+    </properties>
+
     <dependencies>
 
-        <!-- Spring Web MVC: REST API (nội bộ) -->
+        <!-- Spring Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Spring Kafka: Consumer (nhận ride-request-event) và Producer (gửi match-found-event) -->
+        <!-- Kafka for consuming ride events -->
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
         </dependency>
 
-        <!-- Actuator: Health check & metrics endpoint -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
-        <!-- Lombok: Giảm boilerplate code -->
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
 
-        <!-- DevTools: Hot reload khi phát triển -->
+        <!-- Actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- ===== Test Dependencies ===== -->
+        <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- Kafka Test: EmbeddedKafka cho integration test -->
         <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka-test</artifactId>
-            <scope>test</scope>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
     </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-    <!-- =========================================== -->
-    <!-- Build: Kích hoạt plugin từ Root pluginMgmt  -->
-    <!-- =========================================== -->
     <build>
         <plugins>
-            <!-- Đóng gói thành Executable Fat JAR -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <!-- Compiler với Lombok annotation processor -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
